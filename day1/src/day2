@@ -1,0 +1,56 @@
+2018-06-23 재직자 과정 Spring 4.0 day2
+
+pojo class 어떻게 디자인할건지가 중요
+
+spring 의존성 주입 DI 개념.
+요구사항이 변경 되었을 때,결합도를 낮춰 유연하게 개발할 수 있는 이점을 준다. 
+
+-Hello class 일을 하기 위해서 필요한 consolePrinter class에 print라는 기능이 필요하다.
+ Hello에서 print가 필요하면 consolePrinter를 객체를 생성 해서 Heap메모리에 올리고 사용한다.
+	위의 경우는 결합도가 높아 변화에 취약하다. 
+	요구사항 변경에 대응하기 어렵다.
+	->요구사항을 변경하고 의존하는 클래스의 참조를 변경해야한다.
+	강한의존관계 = new 를 직접 사용하여 객체를 생성
+	다형성, 외부에서(파일)에서 읽어 온 후에 파일 정보에 따라 객체를 생성하겠다.
+해법 : (인터페이스로 사용하여)Print obj = object.txt 파일에 있는 클래스명에 따라 객체를 생성시키겠다.(외부에서  정보를 가져온다.)
+	
+	txt 파일을 대체 역할을 하는 것이 spring의 xml파일.
+	
+	xml 태그가 정의되어 있고 태그 형식에 마춰 작성해야한다.
+	
+	[ SGML [ XML [ HTML ]]] 범위
+	
+	 
+	
+-TIP spring 공식 1
+business 로직 pojo
+1.class간의 참조
+	layer간에는 무조건 interface를 정의한다.
+	인터페이스타입으로 참조한다.
+2.가능하면 interface를 두고 구현하는 class를 만들어서 사용한다.
+
+Junit에서 사용하는	Application 인터페이스이다.
+	why ?
+		class 설정 정보를 txt,excel,db로 담을 수 있도록 하도록 다양한 설정 정보를담을 수 있도록해준다.
+	  	1)xml		 	annotation을 사용하지 않고 xml로만 개발하면 중앙집중적으로 관리할 수 있고 흐름을 볼수 있다.
+	  	2)annotation
+	  	3)java class bean 필요에 의해서 팩토리를 만드는 경우.
+.Text 파일로 구현하기
+Class라는 클래스를 이용해서 Mata 데이터를 가져올 수 있음
+=>리플렉션 기술
+	=>Json 형태의 설정 정보
+
+-TIP
+DB TABLE 제약조건은 OUT LINE으로 작성하기.
+NOT NULL이나 NULL은 제외.
+
+	테이블 생성 
+	CREATE TABLE MEMBER(
+	    ID VARCHAR2(20),
+	    NAME VARCHAR2(24),
+	    PASSWORD VARCHAR2(20),
+	    
+	    CONSTRAINT USER_ID_PK PRIMARY KEY(ID)
+	)
+	COMMIT;
+
