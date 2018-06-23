@@ -42,15 +42,99 @@ Class라는 클래스를 이용해서 Mata 데이터를 가져올 수 있음
 
 -TIP
 DB TABLE 제약조건은 OUT LINE으로 작성하기.
-NOT NULL이나 NULL은 제외.
+VO implements Serializable//네트워크를 통해서 데이터가 전송될 수 도 있다.
+VO 생성자를 만들 때 기본 생성자는 필히 만들어야한다.
+VO 그 다음 필요한 필드에 대한 생성자를 만들어준다.
 
-	테이블 생성 
-	CREATE TABLE MEMBER(
-	    ID VARCHAR2(20),
-	    NAME VARCHAR2(24),
-	    PASSWORD VARCHAR2(20),
-	    
-	    CONSTRAINT USER_ID_PK PRIMARY KEY(ID)
-	)
-	COMMIT;
+pojo 클래스를 만들 때,
+	관심사의 분리 - 모듈화 - 단일 책임 원칙 - 분리와 확장
+	
+	add	(3개의 관심사)		get(3개의 관심사)
+		-1.연결				1.연결				=	중복.
+		-2.실행 []			2.실행 O				=	inser / select / delete / update 공통
+		-3.자원 반납 (없음)		3.자원 반납				=	다를 수 있음.
+	관심사의 분리 
+		1단계 : 공통적인 부분을 메소드로 분리. 필요한 것을 호출하여 사용할 수 있도록한다.
+			DB가 바뀔 경우 메소드만 바꿔주면된다.
+			보안상 DB 적용 연결 드라이버 매소드는  접근제어자를 private로 설정해준다.
+		2단계 : Class로 분리. 상속을 통해서 분리.
+			추상화 클래스(supper) - 학장 클래스 (실제 구현)
+			상속이 확장성의 장점.
+			연관관계가 밀접하다 단점.
+		3단계 : 완전히 독립적인 관계
+			Class에서 변수 선언과 생성자를 만들어주어 객체로 생성해서 사용. 
+			제어의 역전을 통해서 필요한 객체를 주입 받는다.
+			IOC DI
+			Inversion of Control / Dependency Injection 
+			
+			이 기능을 담고 있는 것이 Spring container이다.
+		
+			jsp 요청과 응답을 처리하는 방식과 같다.	
+			
+			생성자 주입 방식.
+			getter/setter 주입방식.
+			매소드 주입방식.		
+			단점 : class로 할 경우 다형성이 활용하기 어렵다.
+					=> interface로 date type으로 지정해주어 진행
+	==>객체 생성을 담당하고 있는 class를 팩토리라고한다.
+			
+			
+<java 개발원칙>	
+	S 단일 책임 원칙
+	O 개방 폐쇠의 원칙
+		 클래스나 모률은 확장에는 열려 있어야 하고 변경에는 닫혀 있어야 한다
+		오라클을 쓰다가 다른 DB를 써야한다는 것은 확장해서 쓸 수 있지만 연결하는 기능을 변경이 되면안된다.
+
+Tip
+	DAO 클래스 개발시,
+	DB연결.
+		1.드라이버 구하기			
+		2.드라이버 로딩			classforname
+		3.커넥션 객체 구하기		connection 객체
+		4.db 실행을 위한 객체를 구하고	prepararestatement  
+		5.실행 및 실행 결과 얻기			execut / resultset
+		6.가져온 결과를 가공하고		
+		7.자원 반납
+
+		
+	
+	
+	
+low level 언어로 개발해보기
+
+프로토콜 주/서브
+ex)"jdbc:oracle:thin:@localhost:1521:xe", "scott", "tiger"
+		프로토콜
+oracle은 3단계로 나눠짐.
+syse빨간 표시
+	
+new 키워드로 객체를 생성하는 경우를 강한 연결이라고 한다.	
+외부에서 객체를 생성하여 위임하는 경우 약한 연결.=> type은 interface로 생성
+
+금융 개발은
+	A은행에서 B은행으로 보내줘야할 떄 DB가 다를 경우 DaoFcatory같은 부분을 이용해 개발하는 예
+
+Connection pool을 만드는 이유
+	1.DB 처리 보다 DB연결 작업 시간이 오래걸린다.
+		설정 정보 => 속도가 우수한 수 java class로 만드는 경우 가장 느린경우는 annotaion 컴포먼트 스켄을 해야하기 때문에 느리다.
+		예전에 하나은행의 경우 무조건 설정정보파일을 java를 사용하도록 했다.
+TIP
+java 개발시 숫자를 절대 short을 사용하지 않는다. int 사용
+실수 연산시 정수 변환 후 연산하고 결과를 다시 실수로 변환하는 작업을 해준다.
+			
+			사용되지않는 객체를 정리해주는 것이나이라
+			system.gc() => os의 interrup 우선순위에 영향을 받는다.
+			시스템에.부탁을한다
+
+		
+pon.xml에 있는 java version과 실제 버전을 확인 JRE System Libarary에서 확인. 버전 수정은 라이브러리에서 마우스 오른쪽 누른후 properties
+
+@Configuration 설정 정보 명시 annotation
+@Bean 객체 생성 annotation
+
+기본적으로 스프링컨텍스트는 싱글톤이 적용되어 있다.
+
+
+
+
 

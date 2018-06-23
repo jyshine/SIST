@@ -1,48 +1,140 @@
-2018-06-23 ������ ���� Spring 4.0 day2
+2018-06-23 재직자 과정 Spring 4.0 day2
 
-pojo class ��� �������Ұ����� �߿�
+pojo class 어떻게 디자인할건지가 중요
 
-spring ������ ���� DI ����.
-�䱸������ ���� �Ǿ��� ��,���յ��� ���� �����ϰ� ������ �� �ִ� ������ �ش�. 
+spring 의존성 주입 DI 개념.
+요구사항이 변경 되었을 때,결합도를 낮춰 유연하게 개발할 수 있는 이점을 준다. 
 
--Hello class ���� �ϱ� ���ؼ� �ʿ��� consolePrinter class�� print��� ����� �ʿ��ϴ�.
- Hello���� print�� �ʿ��ϸ� consolePrinter�� ��ü�� ���� �ؼ� Heap�޸𸮿� �ø��� ����Ѵ�.
-	���� ���� ���յ��� ���� ��ȭ�� ����ϴ�. 
-	�䱸���� ���濡 �����ϱ� ��ƴ�.
-	->�䱸������ �����ϰ� �����ϴ� Ŭ������ ������ �����ؾ��Ѵ�.
-	������������ = new �� ���� ����Ͽ� ��ü�� ����
-	������, �ܺο���(����)���� �о� �� �Ŀ� ���� ������ ���� ��ü�� �����ϰڴ�.
-�ع� : (�������̽��� ����Ͽ�)Print obj = object.txt ���Ͽ� �ִ� Ŭ�������� ���� ��ü�� ������Ű�ڴ�.(�ܺο���  ������ �����´�.)
+-Hello class 일을 하기 위해서 필요한 consolePrinter class에 print라는 기능이 필요하다.
+ Hello에서 print가 필요하면 consolePrinter를 객체를 생성 해서 Heap메모리에 올리고 사용한다.
+	위의 경우는 결합도가 높아 변화에 취약하다. 
+	요구사항 변경에 대응하기 어렵다.
+	->요구사항을 변경하고 의존하는 클래스의 참조를 변경해야한다.
+	강한의존관계 = new 를 직접 사용하여 객체를 생성
+	다형성, 외부에서(파일)에서 읽어 온 후에 파일 정보에 따라 객체를 생성하겠다.
+해법 : (인터페이스로 사용하여)Print obj = object.txt 파일에 있는 클래스명에 따라 객체를 생성시키겠다.(외부에서  정보를 가져온다.)
 	
-	txt ������ ��ü ������ �ϴ� ���� spring�� xml����.
+	txt 파일을 대체 역할을 하는 것이 spring의 xml파일.
 	
-	xml �±װ� ���ǵǾ� �ְ� �±� ���Ŀ� ���� �ۼ��ؾ��Ѵ�.
+	xml 태그가 정의되어 있고 태그 형식에 마춰 작성해야한다.
 	
-	[ SGML [ XML [ HTML ]]] ����
+	[ SGML [ XML [ HTML ]]] 범위
 	
 	 
 	
--TIP spring ���� 1
-business ���� pojo
-1.class���� ����
-	layer������ ������ interface�� �����Ѵ�.
-	�������̽�Ÿ������ �����Ѵ�.
-2.�����ϸ� interface�� �ΰ� �����ϴ� class�� ���� ����Ѵ�.
+-TIP spring 공식 1
+business 로직 pojo
+1.class간의 참조
+	layer간에는 무조건 interface를 정의한다.
+	인터페이스타입으로 참조한다.
+2.가능하면 interface를 두고 구현하는 class를 만들어서 사용한다.
 
-Junit���� ����ϴ�	Application �������̽��̴�.
+Junit에서 사용하는	Application 인터페이스이다.
 	why ?
-		class ���� ������ txt,excel,db�� ���� �� �ֵ��� �ϵ��� �پ��� ���� ���������� �� �ֵ������ش�.
-	  	1)xml		 	annotation�� ������� �ʰ� xml�θ� �����ϸ� �߾����������� ������ �� �ְ� �帧�� ���� �ִ�.
+		class 설정 정보를 txt,excel,db로 담을 수 있도록 하도록 다양한 설정 정보를담을 수 있도록해준다.
+	  	1)xml		 	annotation을 사용하지 않고 xml로만 개발하면 중앙집중적으로 관리할 수 있고 흐름을 볼수 있다.
 	  	2)annotation
-	  	3)java class bean �ʿ信 ���ؼ� ���丮�� ����� ���.
-.Text ���Ϸ� �����ϱ�
-Class��� Ŭ������ �̿��ؼ� Mata �����͸� ������ �� ����
-=>���÷��� ���
-	=>Json ������ ���� ����
+	  	3)java class bean 필요에 의해서 팩토리를 만드는 경우.
+.Text 파일로 구현하기
+Class라는 클래스를 이용해서 Mata 데이터를 가져올 수 있음
+=>리플렉션 기술
+	=>Json 형태의 설정 정보
 
 -TIP
-DB TABLE ���������� OUT LINE���� �ۼ��ϱ�.
-VO implements Serializable//��Ʈ��ũ�� ���ؼ� �����Ͱ� ���۵� �� �� �ִ�.
-VO �����ڸ� ���� �� �⺻ �����ڴ� ���� �������Ѵ�.
-VO �� ���� �ʿ��� �ʵ忡 ���� �����ڸ� ������ش�.
+DB TABLE 제약조건은 OUT LINE으로 작성하기.
+VO implements Serializable//네트워크를 통해서 데이터가 전송될 수 도 있다.
+VO 생성자를 만들 때 기본 생성자는 필히 만들어야한다.
+VO 그 다음 필요한 필드에 대한 생성자를 만들어준다.
+
+pojo 클래스를 만들 때,
+	관심사의 분리 - 모듈화 - 단일 책임 원칙 - 분리와 확장
+	
+	add	(3개의 관심사)		get(3개의 관심사)
+		-1.연결				1.연결				=	중복.
+		-2.실행 []			2.실행 O				=	inser / select / delete / update 공통
+		-3.자원 반납 (없음)		3.자원 반납				=	다를 수 있음.
+	관심사의 분리 
+		1단계 : 공통적인 부분을 메소드로 분리. 필요한 것을 호출하여 사용할 수 있도록한다.
+			DB가 바뀔 경우 메소드만 바꿔주면된다.
+			보안상 DB 적용 연결 드라이버 매소드는  접근제어자를 private로 설정해준다.
+		2단계 : Class로 분리. 상속을 통해서 분리.
+			추상화 클래스(supper) - 학장 클래스 (실제 구현)
+			상속이 확장성의 장점.
+			연관관계가 밀접하다 단점.
+		3단계 : 완전히 독립적인 관계
+			Class에서 변수 선언과 생성자를 만들어주어 객체로 생성해서 사용. 
+			제어의 역전을 통해서 필요한 객체를 주입 받는다.
+			IOC DI
+			Inversion of Control / Dependency Injection 
+			
+			이 기능을 담고 있는 것이 Spring container이다.
+		
+			jsp 요청과 응답을 처리하는 방식과 같다.	
+			
+			생성자 주입 방식.
+			getter/setter 주입방식.
+			매소드 주입방식.		
+			단점 : class로 할 경우 다형성이 활용하기 어렵다.
+					=> interface로 date type으로 지정해주어 진행
+	==>객체 생성을 담당하고 있는 class를 팩토리라고한다.
+			
+			
+<java 개발원칙>	
+	S 단일 책임 원칙
+	O 개방 폐쇠의 원칙
+		 클래스나 모률은 확장에는 열려 있어야 하고 변경에는 닫혀 있어야 한다
+		오라클을 쓰다가 다른 DB를 써야한다는 것은 확장해서 쓸 수 있지만 연결하는 기능을 변경이 되면안된다.
+
+Tip
+	DAO 클래스 개발시,
+	DB연결.
+		1.드라이버 구하기			
+		2.드라이버 로딩			classforname
+		3.커넥션 객체 구하기		connection 객체
+		4.db 실행을 위한 객체를 구하고	prepararestatement  
+		5.실행 및 실행 결과 얻기			execut / resultset
+		6.가져온 결과를 가공하고		
+		7.자원 반납
+
+		
+	
+	
+	
+low level 언어로 개발해보기
+
+프로토콜 주/서브
+ex)"jdbc:oracle:thin:@localhost:1521:xe", "scott", "tiger"
+		프로토콜
+oracle은 3단계로 나눠짐.
+syse빨간 표시
+	
+new 키워드로 객체를 생성하는 경우를 강한 연결이라고 한다.	
+외부에서 객체를 생성하여 위임하는 경우 약한 연결.=> type은 interface로 생성
+
+금융 개발은
+	A은행에서 B은행으로 보내줘야할 떄 DB가 다를 경우 DaoFcatory같은 부분을 이용해 개발하는 예
+
+Connection pool을 만드는 이유
+	1.DB 처리 보다 DB연결 작업 시간이 오래걸린다.
+		설정 정보 => 속도가 우수한 수 java class로 만드는 경우 가장 느린경우는 annotaion 컴포먼트 스켄을 해야하기 때문에 느리다.
+		예전에 하나은행의 경우 무조건 설정정보파일을 java를 사용하도록 했다.
+TIP
+java 개발시 숫자를 절대 short을 사용하지 않는다. int 사용
+실수 연산시 정수 변환 후 연산하고 결과를 다시 실수로 변환하는 작업을 해준다.
+			
+			사용되지않는 객체를 정리해주는 것이나이라
+			system.gc() => os의 interrup 우선순위에 영향을 받는다.
+			시스템에.부탁을한다
+
+		
+pon.xml에 있는 java version과 실제 버전을 확인 JRE System Libarary에서 확인. 버전 수정은 라이브러리에서 마우스 오른쪽 누른후 properties
+
+@Configuration 설정 정보 명시 annotation
+@Bean 객체 생성 annotation
+
+기본적으로 스프링컨텍스트는 싱글톤이 적용되어 있다.
+
+
+
+
 
